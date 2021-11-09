@@ -1,5 +1,5 @@
 <template>
-    <span :class="className" :title="24 + $t('-hour')">{{ uptime }}</span>
+    <span :class="className" v-tooltip="24 + $t('-hour')">{{ uptime }}</span>
 </template>
 
 <script>

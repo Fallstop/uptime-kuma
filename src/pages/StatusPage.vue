@@ -78,7 +78,7 @@
                     {{ $t("Switch to Dark Theme") }}
                 </button>
 
-                <button class="btn btn-secondary me-2" @click="changeTagsVisibilty(!tagsVisible)">
+                <button class="btn btn-secondary me-2" @click="changeTagsVisibilty(!tagsVisible)" v-tooltip="$t(tagsVisibiltyTooltip)">
                     <template v-if="tagsVisible">
                         <font-awesome-icon icon="eye-slash" />
                         {{ $t("Hide Tags") }}
@@ -305,6 +305,15 @@ export default {
 
         tagsVisible() {
             return this.config.statusPageTags
+        },
+
+        tagsVisibiltyTooltip() {
+            console.log("yasda",this.tagsVisible)
+            if (this.tagsVisible) {
+                return 'currently displaying tags'
+            } else {
+                return 'currently hiding tags'
+            }
         },
 
         logoClass() {

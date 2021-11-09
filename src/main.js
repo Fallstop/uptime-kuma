@@ -1,4 +1,5 @@
 import "bootstrap";
+import {Tooltip} from "bootstrap";
 import { createApp, h } from "vue";
 import contenteditable from "vue-contenteditable";
 import Toast from "vue-toastification";
@@ -49,3 +50,37 @@ if (process.env.NODE_ENV === "development") {
     console.log("Dev Only: window.app is the vue instance");
     window.app = app._instance;
 }
+
+app.directive('tooltip', {
+    beforeMount: function bsTooltipCreate(el, binding) {
+      let trigger;
+      if (binding.modifiers.focus || binding.modifiers.hover || binding.modifiers.click) {
+        const t = [];
+        if (binding.modifiers.focus) t.push('focus');
+        if (binding.modifiers.hover) t.push('hover');
+        if (binding.modifiers.click) t.push('click');
+        trigger = t.join(' ');
+      }
+      let opts = {
+        title: binding.value,
+        placement: binding.arg,
+        trigger: trigger,
+        html: binding.modifiers.html
+      }
+      new Tooltip(el,JSON.parse(JSON.stringify(opts)))
+    },
+    updated: function bsTooltipUpdate(el, binding) {
+      const tooltip = Tooltip.getInstance(el)
+      if (tooltip._config.title !== binding.value) {
+        console.log("yes",tooltip,binding)
+
+        tooltip._config.title = binding.value
+
+        Tooltip.getInstance(el).update();
+      }
+
+    },
+    unmounted(el, binding) {
+      Tooltip.getInstance(el).dispose();
+    },
+  });
